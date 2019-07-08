@@ -23,13 +23,15 @@ public class ContactsActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
+    public String idCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+        idCurrent = getIntent().getExtras().get("user_id").toString();
         mRecyclerView = findViewById(R.id.main_recycler_view);
-        setTitle("@"+getIntent().getExtras().get("username").toString());
+        setTitle(getIntent().getExtras().get("name").toString() + " " + getIntent().getExtras().get("fullname").toString() + " (@" + getIntent().getExtras().get("username").toString() + ")");
     }
 
     @Override
@@ -44,11 +46,14 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     public void getUsers(){
-        String url = "http://10.0.2.2:8000/users";
         RequestQueue queue = Volley.newRequestQueue(this);
         Map<String, String> params = new HashMap();
         JSONObject parameters = new JSONObject(params);
+
         final String userId = getIntent().getExtras().get("user_id").toString();
+
+        String url = "http://10.0.2.2:8080/users/";
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
